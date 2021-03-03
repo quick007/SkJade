@@ -133,11 +133,22 @@ public class SkJade extends JavaPlugin {
 
     private boolean loadElements() {
         try {
-            addon.loadClasses("com.ankoki.skjade.elements"/*,
+            addon.loadClasses("com.ankoki.skjade.elements",
                     "expressions",
                     "effects",
                     "events",
-                    "conditions"*/);
+                    "conditions");
+        } catch (IOException ex) {
+            logger.info("Something went horribly wrong!");
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean loadCustomEnchantElements() {
+        try {
+            addon.loadClasses("com.ankoki.skjade.elements.customenchants");
         } catch (IOException ex) {
             logger.info("Something went horribly wrong!");
             ex.printStackTrace();
