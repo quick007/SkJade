@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 
 public class Config {
 
-    public static boolean PROTOCOL_LIB_ENABLED, HOLOGRAPHIC_DISPLAYS_ENABLED, ELEMENTALS_ENABLED;
+    public static boolean PROTOCOL_LIB_ENABLED, HOLOGRAPHIC_DISPLAYS_ENABLED, ELEMENTALS_ENABLED, CUSTOM_ENCHANTS_ENABLED;
 
     private final SkJade plugin;
 
@@ -64,5 +64,6 @@ public class Config {
         PROTOCOL_LIB_ENABLED = config.getBoolean("protocol-lib-enabled");
         HOLOGRAPHIC_DISPLAYS_ENABLED = config.getBoolean("holographic-displays-enabled");
         ELEMENTALS_ENABLED = config.getBoolean("elementals-enabled");
+        CUSTOM_ENCHANTS_ENABLED = config.getBoolean("custom-enchants-enabled");
     }
 }

@@ -77,6 +77,9 @@ public class SkJade extends JavaPlugin {
                 logger.info("Elementals was found! However it is an early version! Please upgrade to atleast 1.4.");
             }
         }
+        if (Config.CUSTOM_ENCHANTS_ENABLED) {
+            this.loadCustomEnchantElements();
+        }
         this.registerListeners(new PlayerJoin());
         if (version.endsWith("-beta")) {
             logger.warning("You are running on an unstable release and SkJade could potentionally not " +
