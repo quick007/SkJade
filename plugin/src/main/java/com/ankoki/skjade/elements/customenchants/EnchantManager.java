@@ -12,14 +12,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EnchantManager {
-    private EnchantManager(){}
+    private EnchantManager() {
+    }
+
     private static final Map<String, CustomEnchantment> ALL_ENCHANTMENTS = new HashMap<>();
 
     public static CustomEnchantment getEnchantment(String enchant) {
         return ALL_ENCHANTMENTS.get(enchant);
     }
 
-    public static void registerEnchantment(String enchant, CustomEnchantment enchantment) {
+    public static void registerEnchantment(String enchant) {
+        CustomEnchantment enchantment = new CustomEnchantment(enchant);
         ALL_ENCHANTMENTS.put(enchant, enchantment);
     }
 
@@ -45,10 +48,30 @@ public class EnchantManager {
         return item;
     }
 
+    public static ItemStack removeAllCustomEnchants(ItemStack item) {
+        if (item == null) return null;
+        ItemMeta meta = item.getItemMeta();
+        for (Map.Entry<String, CustomEnchantment> entry : ALL_ENCHANTMENTS.entrySet()) {
+            NamespacedKey key = new NamespacedKey(SkJade.getInstance(), entry.getKey());
+            meta.getPersistentDataContainer().remove(key);
+        }
+        item.setItemMeta(meta);
+        return item;
+    }
 
     public static boolean hasCustomEnchant(String name, ItemStack item) {
         if (name == null || item == null) return false;
         return item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(SkJade.getInstance(), name), PersistentDataType.INTEGER);
+    }
+
+    public static boolean hasCustomEnchant(ItemStack item) {
+        if (item == null) return false;
+        ItemMeta meta = item.getItemMeta();
+        for (Map.Entry<String, CustomEnchantment> entry : ALL_ENCHANTMENTS.entrySet()) {
+            NamespacedKey key = new NamespacedKey(SkJade.getInstance(), entry.getKey());
+            if (meta.getPersistentDataContainer().has(key, PersistentDataType.INTEGER)) return true;
+        }
+        return false;
     }
 
     public static int levelOfCustomEnchant(CustomEnchantment enchant, ItemStack item) {
@@ -58,7 +81,8 @@ public class EnchantManager {
         int level = 0;
         try {
             level = container.get(new NamespacedKey(SkJade.getInstance(), enchant.getName()), PersistentDataType.INTEGER);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return level;
     }
 
