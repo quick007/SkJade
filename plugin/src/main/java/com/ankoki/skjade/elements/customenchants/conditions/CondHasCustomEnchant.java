@@ -15,9 +15,9 @@ import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-@Name("Is Custom Enchant")
-@Description("Checks if a string is the name of a custom enchantment.")
-@Examples("if \"jackhammer\" is a custom enchant")
+@Name("Has Custom Enchant")
+@Description("Checks if an item has a custom enchant.")
+@Examples("if player's tool has any custom enchant")
 @Since("insert version")
 public class CondHasCustomEnchant extends Condition {
 
