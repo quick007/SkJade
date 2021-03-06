@@ -2,10 +2,10 @@ package com.ankoki.skjade.elements.customenchants;
 
 import com.ankoki.skjade.SkJade;
 import com.ankoki.skjade.utils.CustomEnchantment;
-import com.ankoki.skjade.utils.ToolGroup;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.HashMap;
@@ -23,62 +23,53 @@ public class EnchantManager {
         ALL_ENCHANTMENTS.put(enchant, enchantment);
     }
 
-    public static void setRarity(String enchant, int rarity) {
-        CustomEnchantment ench = ALL_ENCHANTMENTS.get(enchant);
-        if (ench == null) return;
-        ALL_ENCHANTMENTS.remove(enchant);
-        ench.setRarity(rarity);
-        ALL_ENCHANTMENTS.put(enchant, ench);
-    }
-
-    public static void setMaxLevel(String enchant, int maxLevel) {
-        CustomEnchantment ench = ALL_ENCHANTMENTS.get(enchant);
-        if (ench == null) return;
-        ALL_ENCHANTMENTS.remove(enchant);
-        ench.setMaxLevel(maxLevel);
-        ALL_ENCHANTMENTS.put(enchant, ench);
-    }
-
-    public static void setTableAllowed(String enchant, boolean tableAllowed) {
-        CustomEnchantment ench = ALL_ENCHANTMENTS.get(enchant);
-        if (ench == null) return;
-        ALL_ENCHANTMENTS.remove(enchant);
-        ench.setTableAllowed(tableAllowed);
-        ALL_ENCHANTMENTS.put(enchant, ench);
-    }
-
-    public static void setAcceptedTools(String enchant, ToolGroup[] acceptedTools) {
-        CustomEnchantment ench = ALL_ENCHANTMENTS.get(enchant);
-        if (ench == null) return;
-        ALL_ENCHANTMENTS.remove(enchant);
-        ench.setAcceptedTools(acceptedTools);
-        ALL_ENCHANTMENTS.put(enchant, ench);
-    }
-
     public static boolean isCustomEnchant(String name) {
         return ALL_ENCHANTMENTS.get(name) != null;
     }
 
-    public static void addCustomEnchant(CustomEnchantment enchant, int level, ItemStack item) {
-        if (enchant == null || item == null) return;
+    public static ItemStack addCustomEnchant(CustomEnchantment enchant, int level, ItemStack item) {
+        if (enchant == null || item == null) return null;
         ItemMeta meta = item.getItemMeta();
         NamespacedKey key = new NamespacedKey(SkJade.getInstance(), enchant.getName());
-        meta.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, Math.min(level, enchant.getMaxLevel()));
+        meta.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, Math.max(1, level));
+        item.setItemMeta(meta);
+        return item;
     }
 
-    public static void removeCustomEnchant(CustomEnchantment enchant, ItemStack item) {
-        if (enchant == null || item == null) return;
+    public static ItemStack removeCustomEnchant(CustomEnchantment enchant, ItemStack item) {
+        if (enchant == null || item == null) return null;
         ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().remove(new NamespacedKey(SkJade.getInstance(), enchant.getName()));
+        NamespacedKey key = new NamespacedKey(SkJade.getInstance(), enchant.getName());
+        meta.getPersistentDataContainer().remove(key);
+        item.setItemMeta(meta);
+        return item;
     }
+
 
     public static boolean hasCustomEnchant(String name, ItemStack item) {
         if (name == null || item == null) return false;
         return item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(SkJade.getInstance(), name), PersistentDataType.INTEGER);
     }
 
+    public static int levelOfCustomEnchant(CustomEnchantment enchant, ItemStack item) {
+        if (enchant == null || item == null) return 0;
+        ItemMeta meta = item.getItemMeta();
+        PersistentDataContainer container = meta.getPersistentDataContainer();
+        int level = 0;
+        try {
+            level = container.get(new NamespacedKey(SkJade.getInstance(), enchant.getName()), PersistentDataType.INTEGER);
+        } catch (Exception ignored) {}
+        return level;
+    }
+
     public static boolean hasCustomEnchant(CustomEnchantment enchantment, ItemStack item) {
         if (enchantment == null || item == null) return false;
         return hasCustomEnchant(enchantment.getName(), item);
     }
+
+    public static ItemStack setEnchantLevel(CustomEnchantment enchantment, int level, ItemStack item) {
+        return addCustomEnchant(enchantment, level, item);
+    }
+
+
 }
