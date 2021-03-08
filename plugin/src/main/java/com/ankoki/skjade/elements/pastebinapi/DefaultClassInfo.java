@@ -1,4 +1,4 @@
-package com.ankoki.skjade.elements;
+package com.ankoki.skjade.elements.pastebinapi;
 
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.classes.ClassInfo;

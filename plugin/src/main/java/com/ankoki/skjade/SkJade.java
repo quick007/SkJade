@@ -140,7 +140,8 @@ public class SkJade extends JavaPlugin {
                     "expressions",
                     "effects",
                     "events",
-                    "conditions");
+                    "conditions",
+                    "pastebinapi");
         } catch (IOException ex) {
             logger.info("Something went horribly wrong!");
             ex.printStackTrace();
