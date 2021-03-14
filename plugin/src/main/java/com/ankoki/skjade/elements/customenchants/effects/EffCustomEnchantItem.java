@@ -41,7 +41,7 @@ public class EffCustomEnchantItem extends Effect {
         if (type == null) return;
         ItemStack i = type.getRandom();
         if (i == null || enchant == null) return;
-        item.change(e, new ItemStack[]{EnchantManager.addCustomEnchant(enchant, lev, i)}, ChangeMode.SET);
+        item.change(e, new ItemType[]{new ItemType(EnchantManager.addCustomEnchant(enchant, lev, i))}, ChangeMode.SET);
     }
 
     @Override
