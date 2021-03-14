@@ -1,6 +1,7 @@
 package com.ankoki.skjade.elements.customenchants.effects;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.aliases.ItemType;
 import ch.njol.skript.classes.Changer.ChangeMode;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
@@ -24,21 +25,22 @@ public class EffCustomEnchantItem extends Effect {
 
     static {
         Skript.registerEffect(EffCustomEnchantItem.class,
-                "add %customenchant% [[with [the]] level] %number% to %itemstack%");
+                "add %customenchant% [[with [the]] level] %number% to %itemtype%");
     }
 
     private Expression<CustomEnchantment> enchantment;
     private Expression<Number> level;
-    private Expression<ItemStack> item;
+    private Expression<ItemType> item;
 
     @Override
     protected void execute(Event e) {
         if (enchantment == null || item == null || level == null) return;
         CustomEnchantment enchant = enchantment.getSingle(e);
         int lev = level.getSingle(e).intValue();
-        ItemStack i = item.getSingle(e);
+        ItemType type = item.getSingle(e);
+        if (type == null) return;
+        ItemStack i = type.getRandom();
         if (i == null || enchant == null) return;
-        if (i.getType().isBlock()) return;
         item.change(e, new ItemStack[]{EnchantManager.addCustomEnchant(enchant, lev, i)}, ChangeMode.SET);
     }
 
@@ -51,7 +53,7 @@ public class EffCustomEnchantItem extends Effect {
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
         enchantment = (Expression<CustomEnchantment>) exprs[0];
         level = (Expression<Number>) exprs[1];
-        item = (Expression<ItemStack>) exprs[2];
+        item = (Expression<ItemType>) exprs[2];
         return true;
     }
 }

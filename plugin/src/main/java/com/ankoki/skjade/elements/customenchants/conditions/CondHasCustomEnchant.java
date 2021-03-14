@@ -48,8 +48,8 @@ public class CondHasCustomEnchant extends Condition {
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
-        enchantment = parseResult.mark == 1 ? null : (Expression<CustomEnchantment>) exprs[0];
-        itemStack = parseResult.mark == 1 ? (Expression<ItemStack>) exprs[0] : (Expression<ItemStack>) exprs[1];
+        itemStack = (Expression<ItemStack>) exprs[0];
+        enchantment = parseResult.mark == 1 ? null : (Expression<CustomEnchantment>) exprs[1];
         return true;
     }
 }
