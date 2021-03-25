@@ -17,7 +17,7 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
 @Name("Show Mining Stage")
-@Description("Shows the block break animation/stage to players.")
+@Description("Shows or removes the block break animation/stage on a block to players.")
 @Examples("show mining stage 5 at player's target block")
 @Since("insert version")
 public class EffShowMiningStage extends Effect {
