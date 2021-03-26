@@ -5,8 +5,8 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
-import net.minecraft.server.v1_16_R3.PacketPlayInSteerVehicle;
 import org.bukkit.plugin.Plugin;
 
 public class VehicleInputListener extends PacketAdapter {
@@ -22,8 +22,10 @@ public class VehicleInputListener extends PacketAdapter {
     @Override
     public void onPacketReceiving(PacketEvent event) {
         if (event.getPacketType().equals(PacketType.Play.Client.STEER_VEHICLE)){
-            PacketPlayInSteerVehicle packet = (PacketPlayInSteerVehicle) event.getPacket().getHandle();
-
+            PacketContainer packet = event.getPacket();
+            float leftMost = packet.getFloat().read(0);
+            float forwardMost = packet.getFloat().read(1);
+            byte space = packet.getBytes().read(0);
         }
     }
 }

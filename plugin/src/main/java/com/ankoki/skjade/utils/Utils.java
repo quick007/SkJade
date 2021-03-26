@@ -14,8 +14,6 @@ import java.util.TreeMap;
 
 public final class Utils {
     private Utils(){}
-    private static final double _2PI = 6.283185307179586;
-    private static final double _3PI = Math.PI + Math.PI + Math.PI;
     private static final TreeMap<Integer, String> ROMAN_NUMERALS = new TreeMap<>();
 
     static {
